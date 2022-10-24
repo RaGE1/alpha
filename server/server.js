@@ -1,8 +1,21 @@
 const express = require('express');   
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
+
+mongoose.connect(process.env.DB_URI,(err)=>{
+    if(err){
+        console.error(err.message);
+    }
+    else{
+        console.log("connnected to mongodb");
+    }
+});
 
 
 //middleware
@@ -19,9 +32,9 @@ app.post('/', (req, res) => {
     res.json('hello from post '+req.body.name).status(201);
 });
 
-app.listen(3000, (req, res) => {
+app.listen(process.env.PORT, (req, res) => {
     try{
-        console.log('listening on port',3000);
+        console.log('listening on port',process.env.PORT);
     }
     catch(err){
         console.log(err.message);
